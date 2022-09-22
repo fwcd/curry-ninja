@@ -1,0 +1,12 @@
+{
+  "name": "ninja",
+  "version": "0.0.1",
+  "author": "fwcd",
+  "synopsis": "Ninja build file generator for Curry",
+  "category": ["Metaprogramming"],
+  "license": "BSD-3-Clause",
+  "licenseFile": "LICENSE",
+  "dependencies": {
+    "transformers": ">= 3.0.0, < 4.0.0"
+  }
+}

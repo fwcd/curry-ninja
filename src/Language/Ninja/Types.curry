@@ -5,23 +5,27 @@ module Language.Ninja.Types
   ) where
 
 newtype Ninja = Ninja [Stmt]
+  deriving (Show, Eq)
 
 data Stmt = VarStmt (Var String)
           | RuleStmt Rule
           | BuildStmt Build
           | CommentStmt String
           | WhitespaceStmt
+  deriving (Show, Eq)
 
 data Var a = Var
   { varName  :: String
   , varValue :: a
   }
+  deriving (Show, Eq)
 
 data Rule = Rule
   { ruleName        :: String
   , ruleCommand     :: Maybe String
   , ruleDescription :: Maybe String
   }
+  deriving (Show, Eq)
 
 data Build = Build
   { buildOutputs       :: [String]
@@ -33,6 +37,7 @@ data Build = Build
   , buildDescription   :: Maybe String
   , buildGenerator     :: Bool
   }
+  deriving (Show, Eq)
 
 instance Monoid Ninja where
   mempty = Ninja []

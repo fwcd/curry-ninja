@@ -5,24 +5,30 @@ module Language.Ninja.Builder
   ) where
 
 import Control.Monad.Trans.Writer ( WriterT, tell, execWriterT )
+import Data.Functor.Identity ( Identity (..) )
 import Language.Ninja.Types
 
-type NinjaBuilder = WriterT Ninja IO
+type NinjaBuilderT = WriterT Ninja
 
-build :: Build -> NinjaBuilder ()
+type NinjaBuilder = NinjaBuilderT Identity
+
+build :: Monad m => Build -> NinjaBuilderT m ()
 build b = tell $ Ninja [BuildStmt b]
 
-rule :: Rule -> NinjaBuilder ()
+rule :: Monad m => Rule -> NinjaBuilderT m ()
 rule r = tell $ Ninja [RuleStmt r]
 
-var :: Var String -> NinjaBuilder ()
+var :: Monad m => Var String -> NinjaBuilderT m ()
 var v = tell $ Ninja [VarStmt v]
 
-comment :: String -> NinjaBuilder ()
+comment :: Monad m => String -> NinjaBuilderT m ()
 comment c = tell $ Ninja [CommentStmt c]
 
-whitespace :: NinjaBuilder ()
+whitespace :: Monad m => NinjaBuilderT m ()
 whitespace = tell $ Ninja [WhitespaceStmt]
 
-execNinjaBuilder :: NinjaBuilder a -> IO Ninja
-execNinjaBuilder = execWriterT
+execNinjaBuilderT :: Monad m => NinjaBuilderT m a -> m Ninja
+execNinjaBuilderT = execWriterT
+
+execNinjaBuilder :: NinjaBuilder a -> Ninja
+execNinjaBuilder = runIdentity . execNinjaBuilderT

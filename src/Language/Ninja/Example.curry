@@ -5,7 +5,7 @@ module Language.Ninja.Example
 import Language.Ninja.Builder ( execNinjaBuilder, comment, var, rule, build, whitespace )
 import Language.Ninja.Types
 
-exampleNinja :: IO Ninja
+exampleNinja :: Ninja
 exampleNinja = execNinjaBuilder $ do
   comment "Flags"
   var $ "cflags" =. "-Wall"

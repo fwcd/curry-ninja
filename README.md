@@ -13,8 +13,12 @@ This Curry library came up as a byproduct from experimenting with a Ninja-based 
 The following is an example of how a simple Ninja file can be expressed in Curry using the `NinjaBuilder` monad:
 
 ```curry
-exampleNinja :: IO Ninja
-exampleNinja = execNinjaBuilder $ do
+import Language.Ninja.Builder
+import Language.Ninja.Pretty
+import Language.Ninja.Types
+
+main :: IO ()
+main = writeFile "build.ninja" $ ppNinja $ execNinjaBuilder $ do
   comment "Flags"
   var $ "cflags" =. "-Wall"
   whitespace
@@ -42,3 +46,7 @@ rule cc
 # Builds
 build foo.o: cc foo.c
 ```
+
+> Note: Since a transformer version of the monad is available too (`NinjaBuilderT`), it is easy to create a monad that supports IO (`NinjaBuilderT IO`) and e.g. generate build files depending on source files in a directory.
+
+<!-- TODO: Add an example of NinjaBuilderT IO used this way -->
